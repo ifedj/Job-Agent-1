@@ -24,7 +24,17 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Registration failed");
+        // Show the specific error if available, otherwise a helpful fallback
+        const msg = data.error ?? "";
+        if (msg.toLowerCase().includes("already exists")) {
+          setError("An account with this email already exists. Please sign in instead.");
+        } else if (msg.toLowerCase().includes("email and password")) {
+          setError("Please enter your email and password.");
+        } else if (msg) {
+          setError(msg);
+        } else {
+          setError("Something went wrong. Please try again in a moment.");
+        }
         setLoading(false);
         return;
       }
