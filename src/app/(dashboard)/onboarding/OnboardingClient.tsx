@@ -71,19 +71,19 @@ export function OnboardingClient({
             <div
               className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium ${
                 step > s.id
-                  ? "bg-indigo-600 text-white"
+                  ? "bg-[#7c3aed] text-white"
                   : step === s.id
-                    ? "border-2 border-indigo-600 bg-white text-indigo-600"
-                    : "border border-slate-200 bg-white text-slate-400"
+                    ? "border-2 border-[#7c3aed] bg-white text-[#7c3aed]"
+                    : "border border-[#e5e7eb] bg-white text-[#6b7280]"
               }`}
             >
               {step > s.id ? "✓" : s.id}
             </div>
-            <span className={`text-sm font-medium ${step >= s.id ? "text-slate-900" : "text-slate-400"}`}>
+            <span className={`text-sm font-medium ${step >= s.id ? "text-[#0a0a0a]" : "text-[#6b7280]"}`}>
               {s.title}
             </span>
             {i < STEPS.length - 1 && (
-              <div className="mx-1 h-px w-4 bg-slate-200" aria-hidden />
+              <div className="mx-1 h-px w-4 bg-[#e5e7eb]" aria-hidden />
             )}
           </div>
         ))}
@@ -109,7 +109,7 @@ export function OnboardingClient({
               type="button"
               onClick={() => setStep(2)}
               disabled={!hasCv}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
             >
               Continue →
             </button>
@@ -124,14 +124,14 @@ export function OnboardingClient({
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="rounded-lg border border-[#e5e7eb] bg-[#f3f4f6] px-4 py-2 text-sm font-medium text-[#111111] hover:bg-[#e5e7eb]"
             >
               ← Back
             </button>
             <button
               type="button"
               onClick={() => setStep(3)}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+              className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
             >
               Continue →
             </button>
@@ -142,12 +142,12 @@ export function OnboardingClient({
       {step === 3 && (
         <>
           <PreferencesForm preferences={preferences} onChange={setPreferences} section="targeting" />
-          {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+          {error && <p className="mt-2 text-sm text-[#92400e] bg-[#fffbeb] px-2 py-1 rounded">{error}</p>}
           <div className="mt-6 flex justify-between">
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="rounded-lg border border-[#e5e7eb] bg-[#f3f4f6] px-4 py-2 text-sm font-medium text-[#111111] hover:bg-[#e5e7eb]"
             >
               ← Back
             </button>
@@ -155,13 +155,13 @@ export function OnboardingClient({
               type="button"
               onClick={handleFinish}
               disabled={!canFinish || saving}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
             >
               {saving ? "Saving…" : "Start my job search →"}
             </button>
           </div>
           {!canFinish && (
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-[#6b7280]">
               Select at least one industry and one company stage to continue.
             </p>
           )}

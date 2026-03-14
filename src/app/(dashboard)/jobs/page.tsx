@@ -8,8 +8,8 @@ export default async function JobsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-slate-900">Jobs</h1>
-      <p className="mt-1 text-slate-600">
+      <h1 className="text-2xl font-semibold text-[#0a0a0a]">Jobs</h1>
+      <p className="mt-1 text-[#374151]">
         Only roles published in the past 30 days are shown. Click a job link to verify it is still open before approving.
       </p>
       <JobsList />

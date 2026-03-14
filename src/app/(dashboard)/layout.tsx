@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-[#ffffff]">
       <AppSidebar user={session.user} />
       <main className="flex-1 overflow-auto px-6 py-8">{children}</main>
     </div>

@@ -16,10 +16,10 @@ export function AppSidebar({ user }: { user: User }) {
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-56 flex-col border-r border-slate-200 bg-white">
-      <div className="flex h-14 items-center gap-2 border-b border-slate-200 px-4">
-        <Link href="/dashboard" className="font-semibold text-slate-900">
-          Job Search
+    <aside className="flex w-56 flex-col border-r border-[#e5e7eb] bg-[#f8f9fa]">
+      <div className="flex h-14 items-center gap-2 border-b border-[#e5e7eb] px-4">
+        <Link href="/dashboard" className="font-semibold text-[#0a0a0a]">
+          <span className="text-[#7c3aed]">Job</span> Search
         </Link>
       </div>
       <nav className="flex flex-1 flex-col gap-0.5 p-3">
@@ -31,8 +31,8 @@ export function AppSidebar({ user }: { user: User }) {
               href={href}
               className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                 active
-                  ? "bg-indigo-50 text-indigo-700"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  ? "bg-[#f3f4f6] text-[#000000]"
+                  : "text-[#374151] hover:bg-[#f3f4f6]/70 hover:text-[#0a0a0a]"
               }`}
             >
               {label}
@@ -40,14 +40,14 @@ export function AppSidebar({ user }: { user: User }) {
           );
         })}
       </nav>
-      <div className="border-t border-slate-200 p-3">
-        <p className="truncate px-3 py-1 text-xs text-slate-500" title={user.email ?? undefined}>
+      <div className="border-t border-[#e5e7eb] p-3">
+        <p className="truncate px-3 py-1 text-xs text-[#6b7280]" title={user.email ?? undefined}>
           {user.email}
         </p>
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: "/" })}
-          className="mt-1 w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+          className="mt-1 w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-[#374151] hover:bg-[#f3f4f6] hover:text-[#0a0a0a]"
         >
           Sign out
         </button>

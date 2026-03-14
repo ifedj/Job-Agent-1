@@ -57,12 +57,12 @@ export function OutreachSection({ applicationId }: { applicationId: string }) {
     }
   }
 
-  if (loading) return <div className="mt-8 text-sm text-slate-500">Loading contacts…</div>;
+  if (loading) return <div className="mt-8 text-sm text-[#6b7280]">Loading contacts…</div>;
 
   return (
-    <div className="mt-8 border-t border-slate-200 pt-8">
-      <h2 className="text-lg font-medium text-slate-900">Hiring manager / outreach</h2>
-      <p className="mt-1 text-sm text-slate-500">
+    <div className="mt-8 border-t border-[#e5e7eb] pt-8">
+      <h2 className="text-lg font-medium text-[#0a0a0a]">Hiring manager / outreach</h2>
+      <p className="mt-1 text-sm text-[#6b7280]">
         Add a contact (e.g. hiring manager or CEO). Generate an outreach email, edit and approve, then send or copy.
       </p>
 
@@ -72,26 +72,26 @@ export function OutreachSection({ applicationId }: { applicationId: string }) {
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+          className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280]"
         />
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+          className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280]"
         />
         <input
           type="url"
           placeholder="LinkedIn URL (optional)"
           value={linkedinUrl}
           onChange={(e) => setLinkedinUrl(e.target.value)}
-          className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+          className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280]"
         />
         <button
           type="submit"
           disabled={adding}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
         >
           {adding ? "Adding…" : "Add contact"}
         </button>
@@ -99,11 +99,11 @@ export function OutreachSection({ applicationId }: { applicationId: string }) {
 
       <ul className="mt-6 space-y-4">
         {contacts.map((c) => (
-          <li key={c.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <li key={c.id} className="rounded-lg border border-[#e5e7eb] bg-[#f9fafb] p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <p className="font-medium text-slate-900">{c.name}</p>
-                <p className="text-sm text-slate-600">{c.email}</p>
+                <p className="font-medium text-[#0a0a0a]">{c.name}</p>
+                <p className="text-sm text-[#374151]">{c.email}</p>
                 {c.linkedinUrl && (
                   <a
                     href={c.linkedinUrl}
@@ -159,7 +159,7 @@ function OutreachList({
           type="button"
           onClick={generateOutreach}
           disabled={generating}
-          className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+          className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-1.5 text-sm font-medium text-[#374151] hover:bg-[#f3f4f6] disabled:opacity-50"
         >
           {generating ? "Generating…" : "Generate outreach email"}
         </button>
@@ -231,14 +231,14 @@ function OutreachRow({
 
   if (outreach.status === "sent") {
     return (
-      <div className="rounded bg-green-50 p-3 text-sm text-green-800">
+      <div className="rounded bg-[#dcfce7] p-3 text-sm text-[#166534]">
         Sent {outreach.sentAt ? new Date(outreach.sentAt).toLocaleString() : ""}
       </div>
     );
   }
 
   return (
-    <div className="mt-2 rounded-lg border border-slate-200 bg-white p-3">
+    <div className="mt-2 rounded-lg border border-[#e5e7eb] bg-white p-3">
       {isEditing ? (
         <>
           <input
@@ -246,20 +246,20 @@ function OutreachRow({
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Subject"
-            className="mb-2 w-full rounded border border-slate-300 px-2 py-1 text-sm"
+            className="mb-2 w-full rounded border border-[#e5e7eb] bg-white px-2 py-1 text-sm text-[#111111]"
           />
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             rows={4}
-            className="w-full rounded border border-slate-300 p-2 text-sm"
+            className="w-full rounded border border-[#e5e7eb] bg-white p-2 text-sm text-[#111111]"
           />
           <div className="mt-2 flex gap-2">
             <button
               type="button"
               onClick={save}
               disabled={saving}
-              className="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="rounded-lg bg-[#16a34a] px-3 py-1.5 text-sm text-white hover:opacity-90 disabled:opacity-50"
             >
               Save & approve
             </button>
@@ -267,7 +267,7 @@ function OutreachRow({
               type="button"
               onClick={send}
               disabled={sending}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-1.5 text-sm text-[#374151] hover:bg-[#f3f4f6] disabled:opacity-50"
             >
               {sending ? "Sending…" : "Send email"}
             </button>
@@ -275,18 +275,18 @@ function OutreachRow({
         </>
       ) : (
         <div>
-          <p className="text-sm font-medium text-slate-700">{outreach.emailSubject}</p>
-          <p className="mt-1 whitespace-pre-wrap text-sm text-slate-600">{outreach.emailBody.slice(0, 200)}…</p>
+          <p className="text-sm font-medium text-[#374151]">{outreach.emailSubject}</p>
+          <p className="mt-1 whitespace-pre-wrap text-sm text-[#374151]">{outreach.emailBody.slice(0, 200)}…</p>
           <button
             type="button"
             onClick={onEdit}
-            className="mt-2 text-sm font-medium text-slate-900 hover:underline"
+            className="mt-2 text-sm font-medium text-[#0a0a0a] hover:underline"
           >
             Edit & send
           </button>
         </div>
       )}
-      {copyMessage && <p className="mt-2 text-sm text-slate-600">{copyMessage}</p>}
+      {copyMessage && <p className="mt-2 text-sm text-[#6b7280]">{copyMessage}</p>}
     </div>
   );
 }

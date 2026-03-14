@@ -38,18 +38,18 @@ export function TagInput({
   };
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-2 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-0">
+    <div className="rounded-lg border border-[#e5e7eb] bg-white p-2 focus-within:ring-2 focus-within:ring-[#7c3aed] focus-within:ring-offset-0">
       <div className="flex flex-wrap items-center gap-2">
         {tags.map((tag, i) => (
           <span
             key={`${tag}-${i}`}
-            className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700"
+            className="inline-flex items-center gap-1 rounded-full bg-[#f3e8ff] px-3 py-1 text-sm font-medium text-[#6b21a8]"
           >
             {tag}
             <button
               type="button"
               onClick={() => removeTag(i)}
-              className="rounded-full p-0.5 hover:bg-indigo-100"
+              className="rounded-full p-0.5 hover:bg-[#e9d5ff]"
               aria-label={`Remove ${tag}`}
             >
               <span className="sr-only">Remove</span>
@@ -65,7 +65,7 @@ export function TagInput({
           onKeyDown={handleKeyDown}
           onBlur={() => input.trim() && addTag(input)}
           placeholder={tags.length === 0 ? placeholder : ""}
-          className="min-w-[120px] flex-1 border-0 bg-transparent p-1 text-sm text-slate-900 placeholder-slate-400 focus:outline-none"
+          className="min-w-[120px] flex-1 border-0 bg-transparent p-1 text-sm text-[#111111] placeholder-[#6b7280] focus:outline-none"
         />
       </div>
       {hint && (

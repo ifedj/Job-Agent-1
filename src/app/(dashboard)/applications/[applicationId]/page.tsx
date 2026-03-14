@@ -25,14 +25,14 @@ export default async function ApplicationPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-slate-900">
+      <h1 className="text-2xl font-semibold text-[#0a0a0a]">
         {application.jobMatch.job.title} at {application.jobMatch.job.company}
       </h1>
       <a
         href={application.jobMatch.job.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-1 inline-block text-sm text-blue-600 hover:underline"
+        className="mt-1 inline-block text-sm text-[#7c3aed] hover:underline"
       >
         View job listing
       </a>

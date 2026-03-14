@@ -28,53 +28,53 @@ export function PreferencesForm({ preferences, onChange, section = "all" }: Pref
   return (
     <div className="space-y-6">
       {showTarget && (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Set your target</h2>
-        <p className="mt-1 text-sm text-slate-500">
+      <section className="rounded-xl border border-[#e5e7eb] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+        <h2 className="text-lg font-semibold text-[#0a0a0a]">Set your target</h2>
+        <p className="mt-1 text-sm text-[#6b7280]">
           Tell us who you are and what you&apos;re looking for.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-slate-700">Target role</label>
+            <label className="block text-sm font-medium text-[#374151]">Target role</label>
             <input
               type="text"
               value={preferences.targetRole ?? ""}
               onChange={(e) => update({ targetRole: e.target.value || undefined })}
               placeholder="e.g. Senior Product Manager"
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="mt-1 w-full rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280] focus:border-[#0a0a0a] focus:ring-1 focus:ring-[#0a0a0a]"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700">Years of experience</label>
+            <label className="block text-sm font-medium text-[#374151]">Years of experience</label>
             <input
               type="text"
               value={preferences.yearsOfExperience ?? ""}
               onChange={(e) => update({ yearsOfExperience: e.target.value || undefined })}
               placeholder="e.g. 8 years"
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="mt-1 w-full rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280] focus:border-[#0a0a0a] focus:ring-1 focus:ring-[#0a0a0a]"
             />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-slate-700">Salary range</label>
+            <label className="block text-sm font-medium text-[#374151]">Salary range</label>
             <div className="mt-1 flex gap-2">
               <input
                 type="number"
                 value={preferences.salaryMin ?? ""}
                 onChange={(e) => update({ salaryMin: e.target.value ? Number(e.target.value) : undefined })}
                 placeholder="Min"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280] focus:border-[#0a0a0a] focus:ring-1 focus:ring-[#0a0a0a]"
               />
               <input
                 type="number"
                 value={preferences.salaryMax ?? ""}
                 onChange={(e) => update({ salaryMax: e.target.value ? Number(e.target.value) : undefined })}
                 placeholder="Max"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280] focus:border-[#0a0a0a] focus:ring-1 focus:ring-[#0a0a0a]"
               />
             </div>
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-slate-700">Preferred locations</label>
+            <label className="block text-sm font-medium text-[#374151]">Preferred locations</label>
             <div className="mt-1">
               <TagInput
                 tags={locations}
@@ -87,11 +87,11 @@ export function PreferencesForm({ preferences, onChange, section = "all" }: Pref
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700">Max job age (days)</label>
+            <label className="block text-sm font-medium text-[#374151]">Max job age (days)</label>
             <select
               value={preferences.maxJobAgeDays ?? 30}
               onChange={(e) => update({ maxJobAgeDays: Number(e.target.value) })}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="mt-1 w-full rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] focus:border-[#0a0a0a] focus:ring-1 focus:ring-[#0a0a0a]"
             >
               <option value={7}>7 days</option>
               <option value={14}>14 days</option>
@@ -104,14 +104,14 @@ export function PreferencesForm({ preferences, onChange, section = "all" }: Pref
 
       {showTargeting && (
         <>
-          <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">What are you targeting?</h2>
-            <p className="mt-1 text-sm text-slate-500">
+          <section className="rounded-xl border border-[#e5e7eb] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+            <h2 className="text-lg font-semibold text-[#0a0a0a]">What are you targeting?</h2>
+            <p className="mt-1 text-sm text-[#6b7280]">
               Help focus on the right opportunities.
             </p>
             <div className="mt-4 space-y-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700">Industries</label>
+                <label className="block text-sm font-medium text-[#374151]">Industries</label>
                 <div className="mt-2">
                   <CheckboxGrid
                     options={INDUSTRY_OPTIONS}
@@ -122,7 +122,7 @@ export function PreferencesForm({ preferences, onChange, section = "all" }: Pref
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">Company stage</label>
+                <label className="block text-sm font-medium text-[#374151]">Company stage</label>
                 <div className="mt-2">
                   <CheckboxGrid
                     options={COMPANY_STAGE_OPTIONS}
@@ -133,7 +133,7 @@ export function PreferencesForm({ preferences, onChange, section = "all" }: Pref
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700">
+                <label className="block text-sm font-medium text-[#374151]">
                   Dream companies (optional)
                 </label>
                 <div className="mt-1">

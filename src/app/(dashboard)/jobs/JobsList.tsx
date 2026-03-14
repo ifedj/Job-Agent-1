@@ -119,7 +119,7 @@ export function JobsList() {
   }
 
   if (loading) {
-    return <div className="mt-6 text-slate-500">Loading jobs…</div>;
+    return <div className="mt-6 text-[#6b7280]">Loading jobs…</div>;
   }
 
   const totalPages = Math.max(1, Math.ceil(items.length / JOBS_PER_PAGE));
@@ -134,65 +134,76 @@ export function JobsList() {
           type="button"
           onClick={runSearch}
           disabled={searching}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
         >
           {searching ? "Searching…" : "Run job search"}
         </button>
-        <span className="text-sm font-medium text-slate-700">
+        <span className="text-sm font-medium text-[#374151]">
           {items.length} job{items.length !== 1 ? "s" : ""} found
         </span>
-        <span className="text-sm text-slate-500">
+        <span className="text-sm text-[#6b7280]">
           Only roles from the last 30 days. Click the link to verify the role is still open, then approve or reject.
         </span>
       </div>
 
       {error && (
-        <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="rounded-lg bg-[#fffbeb] px-4 py-3 text-sm text-[#92400e]">
           {error}
         </div>
       )}
 
       {items.length === 0 && !error && (
-        <p className="text-slate-500">No jobs yet. Run a search to fetch roles from job boards.</p>
+        <p className="text-[#6b7280]">No jobs yet. Run a search to fetch roles from job boards.</p>
       )}
 
       <ul className="space-y-3">
         {pageItems.map(({ job, match, isTopMatch }) => (
           <li
             key={job.id}
-            className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+            className="rounded-xl border border-[#e5e7eb] bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
           >
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="font-medium text-slate-900">{job.title}</h3>
+                  <h3 className="font-medium text-[#0a0a0a]">{job.title}</h3>
+                  {match?.status === "pending" && (
+                    <span className="rounded bg-[#fef9c3] px-2 py-0.5 text-xs font-medium text-[#854d0e]">
+                      AWAITING APPROVAL
+                    </span>
+                  )}
                   {isTopMatch && (
-                    <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                    <span className="rounded bg-[#dcfce7] px-2 py-0.5 text-xs font-medium text-[#166534]">
                       Top match
                     </span>
                   )}
                   {match?.score != null && (
-                    <span className="rounded bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700">
+                    <span className="rounded bg-[#f3f4f6] px-2 py-0.5 text-xs font-medium text-[#374151]">
                       Match {match.score}%
                     </span>
                   )}
                   {match?.status === "approved" && (
-                    <span className="rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                    <span className="rounded bg-[#dcfce7] px-2 py-0.5 text-xs font-medium text-[#166534]">
                       Approved
                     </span>
                   )}
                   {match?.status === "rejected" && (
-                    <span className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+                    <span className="rounded bg-[#f3f4f6] px-2 py-0.5 text-xs text-[#374151]">
                       Rejected
                     </span>
                   )}
+                  {job.source?.toLowerCase() === "greenhouse" && (
+                    <span className="rounded bg-[#dbeafe] px-2 py-0.5 text-xs font-medium text-[#1e40af]">Greenhouse</span>
+                  )}
+                  {job.source?.toLowerCase() === "lever" && (
+                    <span className="rounded bg-[#f3e8ff] px-2 py-0.5 text-xs font-medium text-[#6b21a8]">Lever</span>
+                  )}
                 </div>
-                <p className="text-sm text-slate-600">{job.company}</p>
+                <p className="text-sm text-[#374151]">{job.company}</p>
                 {job.location && (
-                  <p className="text-sm text-slate-500">{job.location}</p>
+                  <p className="text-sm text-[#6b7280]">{job.location}</p>
                 )}
                 {job.postedAt && (
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="mt-1 text-xs text-[#6b7280]">
                     Posted {new Date(job.postedAt).toLocaleDateString()}
                   </p>
                 )}
@@ -201,24 +212,24 @@ export function JobsList() {
                 href={job.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-1.5 text-sm font-medium text-[#374151] hover:bg-[#f3f4f6]"
               >
                 View role (verify open)
               </a>
             </div>
             {match?.matchReasons?.length ? (
-              <p className="mt-2 text-xs text-slate-500">
+              <p className="mt-2 text-xs text-[#6b7280]">
                 {match.matchReasons.join(" · ")}
               </p>
             ) : null}
             {job.description && (
-              <p className="mt-2 line-clamp-2 text-sm text-slate-600">
+              <p className="mt-2 line-clamp-2 text-sm text-[#374151]">
                 {job.description}
               </p>
             )}
             {match && (
               <div className="mt-3 flex flex-wrap items-center gap-3">
-                <label className="flex items-center gap-2 text-sm text-slate-600">
+                <label className="flex items-center gap-2 text-sm text-[#374151]">
                   <input
                     type="checkbox"
                     checked={match.userVerifiedOpen ?? false}
@@ -227,6 +238,7 @@ export function JobsList() {
                         userVerifiedOpen: e.target.checked,
                       })
                     }
+                    className="rounded border-[#e5e7eb]"
                   />
                   I verified – role is open
                 </label>
@@ -235,16 +247,16 @@ export function JobsList() {
                     <button
                       type="button"
                       onClick={() => updateMatch(job.id, { status: "approved" })}
-                      className="rounded bg-green-600 px-3 py-1 text-sm font-medium text-white hover:bg-green-700"
+                      className="rounded bg-[#16a34a] px-3 py-1 text-sm font-medium text-white hover:opacity-90"
                     >
                       Approve
                     </button>
                     <button
                       type="button"
                       onClick={() => updateMatch(job.id, { status: "rejected" })}
-                      className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                      className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-1.5 text-sm font-medium text-[#374151] hover:bg-[#f3f4f6]"
                     >
-                      Reject
+                      Skip
                     </button>
                   </>
             )}
@@ -255,23 +267,23 @@ export function JobsList() {
       </ul>
 
       {items.length > JOBS_PER_PAGE && (
-        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-slate-200">
+        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-[#e5e7eb]">
           <button
             type="button"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={currentPage <= 1}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg border border-[#e5e7eb] bg-[#f3f4f6] px-3 py-2 text-sm font-medium text-[#111111] hover:bg-[#e5e7eb] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
-          <span className="text-sm text-slate-600">
+          <span className="text-sm text-[#374151]">
             Page {currentPage} of {totalPages}
           </span>
           <button
             type="button"
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage >= totalPages}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg border border-[#e5e7eb] bg-[#f3f4f6] px-3 py-2 text-sm font-medium text-[#111111] hover:bg-[#e5e7eb] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next
           </button>

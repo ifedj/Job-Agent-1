@@ -28,12 +28,12 @@ export function ApplicationsList() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="mt-6 text-slate-500">Loading…</div>;
+  if (loading) return <div className="mt-6 text-[#6b7280]">Loading…</div>;
   if (items.length === 0) {
     return (
-      <p className="mt-6 text-slate-500">
+      <p className="mt-6 text-[#374151]">
         No approved roles yet. Go to{" "}
-        <Link href="/jobs" className="font-medium text-zinc-900 hover:underline">
+        <Link href="/jobs" className="font-medium text-[#0a0a0a] hover:underline">
           Jobs
         </Link>{" "}
         and approve roles you want to apply to.
@@ -46,17 +46,17 @@ export function ApplicationsList() {
       {items.map((item) => (
         <li
           key={item.jobMatchId}
-          className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+          className="rounded-xl border border-[#e5e7eb] bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h3 className="font-medium text-zinc-900">{item.job.title}</h3>
-              <p className="text-sm text-zinc-600">{item.job.company}</p>
+              <h3 className="font-medium text-[#0a0a0a]">{item.job.title}</h3>
+              <p className="text-sm text-[#374151]">{item.job.company}</p>
             </div>
             {item.application ? (
               <Link
                 href={`/applications/${item.application.id}`}
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
               >
                 {item.application.hasCv || item.application.hasCoverLetter
                   ? "Edit & download"
@@ -98,7 +98,7 @@ function CreateAndOpenButton({ jobMatchId }: { jobMatchId: string }) {
       type="button"
       onClick={createAndOpen}
       disabled={loading}
-      className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+      className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
     >
       {loading ? "Creating…" : "Start application"}
     </button>

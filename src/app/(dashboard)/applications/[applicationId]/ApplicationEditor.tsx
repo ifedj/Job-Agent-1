@@ -105,7 +105,7 @@ export function ApplicationEditor({
           type="button"
           onClick={generate}
           disabled={generating}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
         >
           {generating ? "Generating…" : "Generate CV & cover letter"}
         </button>
@@ -113,7 +113,7 @@ export function ApplicationEditor({
           type="button"
           onClick={save}
           disabled={saving}
-          className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+          className="rounded-lg border border-[#e5e7eb] bg-[#f3f4f6] px-4 py-2 text-sm font-medium text-[#111111] hover:bg-[#e5e7eb] disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save edits"}
         </button>
@@ -121,7 +121,7 @@ export function ApplicationEditor({
           <button
             type="button"
             onClick={downloadPrep}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-lg border border-[#e5e7eb] bg-white px-4 py-2 text-sm font-medium text-[#374151] hover:bg-[#f3f4f6]"
           >
             Download (CV + cover letter + link)
           </button>
@@ -130,39 +130,39 @@ export function ApplicationEditor({
           href={jobUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          className="rounded-lg border border-[#e5e7eb] bg-white px-4 py-2 text-sm font-medium text-[#374151] hover:bg-[#f3f4f6]"
         >
           Open job link
         </a>
       </div>
 
       {message && (
-        <p className="rounded-lg bg-slate-100 px-3 py-2 text-sm text-slate-700">
+        <p className="rounded-lg bg-[#f9fafb] border border-[#e5e7eb] px-3 py-2 text-sm font-mono text-[#111111]">
           {message}
         </p>
       )}
 
       <div>
-        <label className="block text-sm font-medium text-slate-700">
+        <label className="block text-sm font-medium text-[#374151]">
           Tailored CV (edit as needed)
         </label>
         <textarea
           value={cv}
           onChange={(e) => setCv(e.target.value)}
           rows={12}
-          className="mt-1 w-full rounded-lg border border-slate-300 p-3 font-mono text-sm text-slate-900"
+          className="mt-1 w-full rounded-lg border border-[#e5e7eb] bg-white p-3 font-mono text-sm text-[#111111]"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700">
+        <label className="block text-sm font-medium text-[#374151]">
           Cover letter (edit as needed)
         </label>
         <textarea
           value={coverLetter}
           onChange={(e) => setCoverLetter(e.target.value)}
           rows={10}
-          className="mt-1 w-full rounded-lg border border-slate-300 p-3 font-mono text-sm text-slate-900"
+          className="mt-1 w-full rounded-lg border border-[#e5e7eb] bg-white p-3 font-mono text-sm text-[#111111]"
         />
       </div>
 

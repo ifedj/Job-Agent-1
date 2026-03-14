@@ -52,14 +52,14 @@ export function CVBlock({ hasCv, summary, onUploaded, onRemoved }: CVBlockProps)
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">Your CV</h2>
-      <p className="mt-1 text-sm text-slate-500">
+    <section className="rounded-xl border border-[#e5e7eb] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+      <h2 className="text-lg font-semibold text-[#0a0a0a]">Your CV</h2>
+      <p className="mt-1 text-sm text-[#6b7280]">
         Upload a PDF or DOCX to extract your skills and experience.
       </p>
       <form onSubmit={handleUpload} className="mt-4 flex flex-wrap items-end gap-4">
         <div className="min-w-[200px] flex-1">
-          <label className="block text-sm font-medium text-slate-700">
+          <label className="block text-sm font-medium text-[#374151]">
             {hasCv ? "Replace with another file (PDF or DOCX)" : "Choose file (PDF or DOCX)"}
           </label>
           <input
@@ -69,13 +69,13 @@ export function CVBlock({ hasCv, summary, onUploaded, onRemoved }: CVBlockProps)
               setFile(e.target.files?.[0] ?? null);
               setUploadError("");
             }}
-            className="mt-1 block w-full text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:font-medium file:text-indigo-700 hover:file:bg-indigo-100"
+            className="mt-1 block w-full text-sm text-[#111111] file:mr-4 file:rounded-lg file:border-0 file:bg-[#f3f4f6] file:px-4 file:py-2 file:font-medium file:text-[#111111] hover:file:bg-[#e5e7eb]"
           />
         </div>
         <button
           type="submit"
           disabled={!file || uploading}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
         >
           {uploading ? "Uploading…" : hasCv ? "Replace CV" : "Upload CV"}
         </button>
@@ -83,17 +83,17 @@ export function CVBlock({ hasCv, summary, onUploaded, onRemoved }: CVBlockProps)
           <button
             type="button"
             onClick={handleRemove}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-lg border border-[#e5e7eb] bg-white px-4 py-2 text-sm font-medium text-[#374151] hover:bg-[#f3f4f6]"
           >
             Remove CV
           </button>
         )}
       </form>
-      {uploadError && <p className="mt-2 text-sm text-red-600">{uploadError}</p>}
+      {uploadError && <p className="mt-2 text-sm text-[#92400e] bg-[#fffbeb] px-2 py-1 rounded">{uploadError}</p>}
       {hasCv && summary && (
-        <div className="mt-4 rounded-lg bg-slate-50 p-4">
-          <p className="text-sm font-medium text-slate-700">Extracted summary (first 4000 chars)</p>
-          <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-words text-sm text-slate-600">
+        <div className="mt-4 rounded-lg bg-[#f9fafb] border border-[#e5e7eb] p-4">
+          <p className="text-sm font-medium text-[#374151]">Extracted summary (first 4000 chars)</p>
+          <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-words text-sm font-mono text-[#111111]">
             {summary}
           </pre>
         </div>

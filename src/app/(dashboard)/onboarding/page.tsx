@@ -24,8 +24,8 @@ export default async function OnboardingPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-slate-900">Welcome</h1>
-      <p className="mt-1 text-slate-600">
+      <h1 className="text-2xl font-semibold text-[#0a0a0a]">Welcome</h1>
+      <p className="mt-1 text-[#374151]">
         Set up your profile so we can find the right roles for you.
       </p>
       <OnboardingClient

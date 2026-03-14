@@ -27,13 +27,13 @@ export function CheckboxGrid({
       {options.map(({ value, label }) => (
         <label
           key={value}
-          className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 hover:border-indigo-200 hover:bg-indigo-50/50 has-[:checked]:border-indigo-300 has-[:checked]:bg-indigo-50"
+          className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#e5e7eb] bg-white px-3 py-2.5 text-sm font-medium text-[#374151] hover:border-[#7c3aed]/40 hover:bg-[#f5f3ff]/50 has-[:checked]:border-[#7c3aed] has-[:checked]:bg-[#f5f3ff]"
         >
           <input
             type="checkbox"
             checked={selected.includes(value)}
             onChange={() => toggle(value)}
-            className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+            className="h-4 w-4 rounded border-[#e5e7eb] text-[#7c3aed] focus:ring-[#7c3aed]"
           />
           {label}
         </label>

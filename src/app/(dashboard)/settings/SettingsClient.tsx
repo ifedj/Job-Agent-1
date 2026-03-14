@@ -123,7 +123,7 @@ export function SettingsClient({
   return (
     <div className="mt-8 space-y-8">
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Target Companies</h2>
+        <h2 className="text-lg font-semibold text-[#0a0a0a]">Target Companies</h2>
         <p className="mt-1 text-sm text-slate-500">
           Companies you’re targeting. Used for job search (Greenhouse, Lever, or Google).
         </p>
@@ -158,12 +158,12 @@ export function SettingsClient({
               }
             }}
             placeholder="Add a company (e.g. Stripe, Figma)"
-            className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+            className="rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-sm text-[#111111] placeholder-[#6b7280] focus:border-[#0a0a0a] focus:ring-1 focus:ring-[#0a0a0a]"
           />
           <button
             type="button"
             onClick={handleAddTargetCompany}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-lg bg-[#f3f4f6] px-3 py-2 text-sm font-medium text-[#111111] hover:bg-[#e5e7eb]"
           >
             Add
           </button>
@@ -171,13 +171,13 @@ export function SettingsClient({
             type="button"
             onClick={handleRefresh}
             disabled={refreshing || dreamCompanies.length === 0}
-            className="rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className="rounded-lg bg-[#000000] px-3 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
           >
             {refreshing ? "Refreshing…" : "Refresh"}
           </button>
         </div>
         {refreshResult !== null && (
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-[#374151]">
             Fetched {refreshResult.fetched} jobs, {refreshResult.created} new.
           </p>
         )}
@@ -202,15 +202,15 @@ export function SettingsClient({
           type="button"
           onClick={handleSavePreferences}
           disabled={saving}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save preferences"}
         </button>
         {message === "saved" && (
-          <span className="text-sm text-green-600">Preferences saved.</span>
+          <span className="text-sm text-[#166534] bg-[#dcfce7] px-2 py-1 rounded">Preferences saved.</span>
         )}
         {message === "error" && (
-          <span className="text-sm text-red-600">Failed to save. Try again.</span>
+          <span className="text-sm text-[#92400e] bg-[#fffbeb] px-2 py-1 rounded">Failed to save. Try again.</span>
         )}
       </div>
     </div>
