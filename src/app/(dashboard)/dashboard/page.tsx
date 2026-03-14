@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { isDirectCompanyJobUrl } from "@/lib/direct-job-url";
 import { DashboardStats } from "./DashboardStats";
 
 function isOnboardingComplete(profile: { originalCvPath: string | null; structuredCv: string; preferences: string } | null): boolean {
@@ -32,14 +33,30 @@ export default async function DashboardPage() {
 
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 30);
-  const [jobsCount, pendingCount, approvedCount, rejectedCount, applicationsCount, outreachSentCount] = await Promise.all([
-    prisma.job.count({ where: { OR: [{ postedAt: { gte: cutoff } }, { postedAt: null }] } }),
-    prisma.jobMatch.count({ where: { userId, status: "pending" } }),
-    prisma.jobMatch.count({ where: { userId, status: "approved" } }),
-    prisma.jobMatch.count({ where: { userId, status: "rejected" } }),
+  const targetRole = (profile?.preferences ? (JSON.parse(profile.preferences) as { targetRole?: string }).targetRole : undefined)?.trim() ?? "";
+
+  const titleFilter = targetRole.toLowerCase().includes("product manager")
+    ? { title: { contains: "product manager" } }
+    : targetRole
+      ? { title: { contains: targetRole } }
+      : {};
+
+  // Fetch all role-matching job matches with their job URLs so we can filter out aggregator links
+  const [allMatches, applicationsCount, outreachSentCount] = await Promise.all([
+    prisma.jobMatch.findMany({
+      where: { userId, job: { AND: [{ OR: [{ postedAt: { gte: cutoff } }, { postedAt: null }] }, titleFilter] } },
+      select: { status: true, job: { select: { url: true } } },
+    }),
     prisma.application.count({ where: { jobMatch: { userId } } }),
     prisma.outreach.count({ where: { status: "sent", contact: { jobMatch: { userId } } } }),
   ]);
+
+  // Exclude jobs with aggregator URLs (same rule as the matched API)
+  const directMatches = allMatches.filter((m) => isDirectCompanyJobUrl(m.job.url));
+  const jobsCount = directMatches.filter((m) => m.status !== "rejected").length;
+  const pendingCount = directMatches.filter((m) => m.status === "pending").length;
+  const approvedCount = directMatches.filter((m) => m.status === "approved").length;
+  const rejectedCount = directMatches.filter((m) => m.status === "rejected").length;
 
   const preferences = profile ? (JSON.parse(profile.preferences) as Record<string, unknown>) : {};
   const name = (session.user as { name?: string | null }).name ?? session.user.email ?? "there";

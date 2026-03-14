@@ -6,10 +6,10 @@ A web app that ingests your CV, searches job boards (and company career pages), 
 
 - **Auth**: Sign up / sign in (credentials). Profile and CV stored per user.
 - **CV upload**: Upload PDF or DOCX. Text is extracted and stored; you can use it for matching and tailored documents.
-- **Job search**: Fetches jobs from **multiple sources**. Only roles from the **last 30 days** are shown. **Only direct company job URLs** are stored (no aggregator links). You can change the window in profile preferences later.
-  - **SerpAPI (Google Jobs)** (recommended): Set `SERPAPI_API_KEY` for web job search; uses direct apply links when available.
-  - **Company career pages**: If you set dream companies in preferences, the app uses Greenhouse and Lever career APIs for those companies and stores **direct job URLs**.
-  - **LinkedIn** (optional, use at your own risk): Set `ENABLE_LINKEDIN_SCRAPER=true` to attempt fetching from LinkedIn; see [LinkedIn scraper disclaimer](src/lib/job-sources/linkedin.ts). Not recommended for production.
+- **Job search**: Uses **SerpAPI** and **company career pages** only (no Adzuna). Only roles from the **last 30 days** are shown; **only direct company job URLs** are stored.
+  - **SerpAPI (Google Jobs)**: Pulls from companies’ career pages directly; set `SERPAPI_API_KEY` in `.env.local`.
+  - **Company career pages (Greenhouse, Lever, etc.)**: Add “dream companies” in Settings; the app fetches roles from their career pages via public APIs.
+  - **LinkedIn** (optional): Set `ENABLE_LINKEDIN_SCRAPER=true` at your own risk; see [disclaimer](src/lib/job-sources/linkedin.ts).
 - **Matching**: Jobs are scored against your profile (skills, experience). You see a match score and short reasons.
 - **Verify & approve**: Each job has a **clickable link** to the listing. Open it to confirm the role is still open, then **Approve** or **Reject**. Optional “I verified – role is open” checkbox.
 - **Applications**: For each approved role you can generate a **tailored CV and cover letter** (OpenAI), edit them, and download a bundle (CV + cover letter + job link) or open the job link.
@@ -43,7 +43,7 @@ A web app that ingests your CV, searches job boards (and company career pages), 
 
 - **Next.js 16** (App Router), **TypeScript**, **Tailwind**
 - **Prisma** + **SQLite** (MVP); **NextAuth** (credentials)
-- **Job sources**: SerpAPI (Google Jobs), company career pages (Greenhouse/Lever via dream companies), LinkedIn (optional, at your own risk). Only **direct company job URLs** are stored. **OpenAI** for CV/cover letter/outreach; **Resend** (optional) for email
+- **Job sources**: SerpAPI (Google Jobs → direct company career page links), Greenhouse/Lever and the like (dream companies). No Adzuna. **OpenAI** for CV/cover letter/outreach; **Resend** (optional) for email.
 
 ## Plan alignment
 

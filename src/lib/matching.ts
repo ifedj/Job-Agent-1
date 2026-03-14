@@ -75,5 +75,9 @@ export function scoreJob(
     }
   }
 
+  // #region agent log
+  fetch('http://127.0.0.1:7754/ingest/f9ecae41-8d2e-4030-8549-ba19d6e46d59',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'c47cc6'},body:JSON.stringify({sessionId:'c47cc6',location:'matching.ts:scoreJob',message:'score breakdown',data:{title:job.title,company:job.company,totalSkills:skills.length,matchedSkills:matched,baseScore: skills.length>0?Math.min(100,Math.round((matched/skills.length)*80)+(reasons.filter(r=>r.startsWith('Skill')).length>0?10:0)):60,finalScore:score,targetIndustries:options?.targetIndustries??[],detectedJobIndustries:options?.targetIndustries?.length?detectJobIndustries({title:job.title,description:job.description,company:job.company??''}):[],reasons},timestamp:Date.now(),hypothesisId:'A-B-C-D-E'})}).catch(()=>{});
+  // #endregion
+
   return { score, matchReasons: reasons.slice(0, 8) };
 }

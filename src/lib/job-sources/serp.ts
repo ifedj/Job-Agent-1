@@ -14,9 +14,8 @@ interface SerpJobItem {
 }
 
 interface SerpResponse {
-  jobs_results?: {
-    jobs?: SerpJobItem[];
-  };
+  /** SerpAPI returns jobs_results as an array of job objects (not { jobs: [] }). */
+  jobs_results?: SerpJobItem[] | { jobs?: SerpJobItem[] };
   error?: string;
 }
 
@@ -46,13 +45,20 @@ export async function fetchSerpJobs(params: SerpSearchParams): Promise<Normalise
   });
   if (!res.ok) return [];
   const data = (await res.json()) as SerpResponse;
-  if (data.error || !data.jobs_results?.jobs) return [];
+  if (data.error) return [];
+  const rawJobs: SerpJobItem[] = Array.isArray(data.jobs_results)
+    ? data.jobs_results
+    : (data.jobs_results?.jobs ?? []);
+  if (rawJobs.length === 0) return [];
 
   const jobs: NormalisedJob[] = [];
-  for (const j of data.jobs_results.jobs) {
+  for (const j of rawJobs) {
     if (!j.title) continue;
     const allLinks = (j.apply_options ?? []).map((o) => o.link).filter(Boolean) as string[];
     const directUrl = pickDirectApplyUrl(allLinks);
+    // #region agent log
+    fetch('http://127.0.0.1:7754/ingest/f9ecae41-8d2e-4030-8549-ba19d6e46d59',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'c47cc6'},body:JSON.stringify({sessionId:'c47cc6',location:'serp.ts:pickDirectApplyUrl',message:'apply links for job',data:{title:j.title,company:j.company_name,allLinks,pickedUrl:directUrl},timestamp:Date.now(),hypothesisId:'A-B-C'})}).catch(()=>{});
+    // #endregion
     if (!directUrl) continue;
     jobs.push({
       externalId: j.job_id ?? `serp_${encodeURIComponent(j.title + (j.company_name ?? ""))}`,

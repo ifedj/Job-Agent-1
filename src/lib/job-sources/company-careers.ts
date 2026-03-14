@@ -3,13 +3,15 @@ import type { NormalisedJob } from "./types";
 const GREENHOUSE_BOARDS = "https://boards-api.greenhouse.io/v1/boards";
 const LEVER_POSTINGS = "https://api.lever.co/v0/postings";
 
+export type CompanySystem = "greenhouse" | "lever" | "serp";
+
 interface GreenhouseJob {
   id: string;
   title: string;
   location: { name: string };
   absolute_url: string;
   updated_at: string;
-  departments?: Array< { name: string } >;
+  departments?: Array<{ name: string }>;
 }
 
 interface LeverPosting {
@@ -21,9 +23,9 @@ interface LeverPosting {
 }
 
 /**
- * Slugify company name for use in board URLs (lowercase, no spaces).
+ * Slugify company name for board/API URLs (lowercase, no spaces, alphanumeric).
  */
-function toSlug(name: string): string {
+export function toSlug(name: string): string {
   return name
     .toLowerCase()
     .replace(/\s+/g, "")
@@ -31,19 +33,19 @@ function toSlug(name: string): string {
     .slice(0, 50);
 }
 
-/**
- * Fetch jobs from a Greenhouse board by board token (often company slug).
- */
-async function fetchGreenhouseBoard(boardToken: string): Promise<NormalisedJob[]> {
+async function fetchGreenhouseBoard(
+  boardToken: string,
+  displayName: string
+): Promise<NormalisedJob[]> {
   const url = `${GREENHOUSE_BOARDS}/${boardToken}/jobs`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
   if (!res.ok) return [];
   const data = (await res.json()) as { jobs?: GreenhouseJob[] };
   const jobs = data.jobs ?? [];
   return jobs.map((j) => ({
     externalId: `gh_${boardToken}_${j.id}`,
     source: "company_careers",
-    company: boardToken,
+    company: displayName,
     title: j.title ?? "",
     location: j.location?.name ?? "",
     url: j.absolute_url ?? "",
@@ -53,19 +55,19 @@ async function fetchGreenhouseBoard(boardToken: string): Promise<NormalisedJob[]
   }));
 }
 
-/**
- * Fetch jobs from Lever postings by company slug.
- */
-async function fetchLeverPostings(companySlug: string): Promise<NormalisedJob[]> {
+async function fetchLeverPostings(
+  companySlug: string,
+  displayName: string
+): Promise<NormalisedJob[]> {
   const url = `${LEVER_POSTINGS}/${companySlug}?mode=json`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  const res = await fetch(url, { signal: AbortSignal.timeout(12000) });
   if (!res.ok) return [];
   const data = (await res.json()) as LeverPosting[];
   if (!Array.isArray(data)) return [];
   return data.map((j) => ({
     externalId: `lever_${companySlug}_${j.id}`,
     source: "company_careers",
-    company: companySlug,
+    company: displayName,
     title: j.text ?? "",
     location: j.categories?.location ?? "",
     url: j.hostedUrl ?? "",
@@ -75,40 +77,83 @@ async function fetchLeverPostings(companySlug: string): Promise<NormalisedJob[]>
   }));
 }
 
-export interface CompanyCareersParams {
+/** Probe Greenhouse: returns true if board exists (200 with jobs array). */
+export async function probeGreenhouse(slug: string): Promise<boolean> {
+  const url = `${GREENHOUSE_BOARDS}/${slug}/jobs`;
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+/** Probe Lever: returns true if postings exist (200 with array). */
+export async function probeLever(slug: string): Promise<boolean> {
+  const url = `${LEVER_POSTINGS}/${slug}?mode=json`;
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    if (!res.ok) return false;
+    const data = await res.json();
+    return Array.isArray(data) && data.length >= 0;
+  } catch {
+    return false;
+  }
+}
+
+export interface FetchCompanyCareersParams {
   companyNames: string[];
+  /** Optional cache: company display name -> system. If provided, skips probing. */
+  companySystems?: Record<string, CompanySystem>;
+}
+
+export interface FetchCompanyCareersResult {
+  jobs: NormalisedJob[];
+  companySystems: Record<string, CompanySystem>;
 }
 
 /**
- * Fetch jobs from company career pages (Greenhouse and Lever).
- * Tries each company name as a board/slug. Many companies use one of these ATS.
+ * For each company: try Greenhouse first; if 404, try Lever; else mark as "serp".
+ * Fetches jobs only from Greenhouse/Lever. Companies marked "serp" should be queried via SerpAPI by the caller.
  */
-export async function fetchCompanyCareersJobs(params: CompanyCareersParams): Promise<NormalisedJob[]> {
-  const { companyNames } = params;
-  if (!companyNames?.length) return [];
-
+export async function fetchCompanyCareersJobs(
+  params: FetchCompanyCareersParams
+): Promise<FetchCompanyCareersResult> {
+  const { companyNames, companySystems: cache } = params;
+  const companySystems: Record<string, CompanySystem> = cache ? { ...cache } : {};
   const all: NormalisedJob[] = [];
-  const seen = new Set<string>();
+  const seenSlugs = new Set<string>();
 
-  for (const name of companyNames.slice(0, 20)) {
+  for (const displayName of companyNames) {
+    const name = displayName.trim();
+    if (!name) continue;
     const slug = toSlug(name);
-    if (!slug || seen.has(slug)) continue;
-    seen.add(slug);
+    if (!slug || seenSlugs.has(slug)) continue;
+    seenSlugs.add(slug);
 
-    const [gh, lever] = await Promise.all([
-      fetchGreenhouseBoard(slug),
-      fetchLeverPostings(slug),
-    ]);
+    let system: CompanySystem;
+    if (cache && cache[name] !== undefined) {
+      system = cache[name];
+    } else {
+      const ghOk = await probeGreenhouse(slug);
+      if (ghOk) {
+        system = "greenhouse";
+      } else {
+        const leverOk = await probeLever(slug);
+        system = leverOk ? "lever" : "serp";
+      }
+      companySystems[name] = system;
+    }
 
-    for (const j of gh) {
-      j.company = name;
-      all.push(j);
+    if (system === "greenhouse") {
+      const jobs = await fetchGreenhouseBoard(slug, name);
+      all.push(...jobs);
+    } else if (system === "lever") {
+      const jobs = await fetchLeverPostings(slug, name);
+      all.push(...jobs);
     }
-    for (const j of lever) {
-      j.company = name;
-      all.push(j);
-    }
+    // "serp" → caller will add SerpAPI queries
   }
 
-  return all;
+  return { jobs: all, companySystems };
 }

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { formatLocationForDisplay } from "@/lib/format-location";
 import { getTargetIndustries } from "@/lib/industry";
 import { scoreJob } from "@/lib/matching";
+import { isDirectCompanyJobUrl } from "@/lib/direct-job-url";
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 import type { StructuredCv } from "@/types/profile";
@@ -34,10 +35,12 @@ export async function GET(request: Request) {
         matchMinScore?: number;
         matchMinScoreTop?: number;
         industries?: string[];
+        targetRole?: string;
       })
     : {};
   const matchMinScore = prefs.matchMinScore ?? DEFAULT_MATCH_MIN_SCORE;
   const matchMinScoreTop = prefs.matchMinScoreTop ?? DEFAULT_MATCH_MIN_SCORE_TOP;
+  const targetRole = prefs.targetRole?.trim() ?? "";
   const targetIndustries = getTargetIndustries(structuredCv, prefs);
 
   // #region agent log
@@ -62,12 +65,22 @@ export async function GET(request: Request) {
   }).catch(() => {});
   // #endregion
 
+  // Filter at DB level: only fetch jobs whose title contains the target role phrase.
+  // This ensures we don't miss any PM roles due to a cap, regardless of how many jobs are in the DB.
+  const titleFilter = targetRole.toLowerCase().includes("product manager")
+    ? { title: { contains: "product manager" } }
+    : targetRole
+      ? { title: { contains: targetRole } }
+      : {};
+
   const jobs = await prisma.job.findMany({
     where: {
-      OR: [{ postedAt: { gte: cutoff } }, { postedAt: null }],
+      AND: [
+        { OR: [{ postedAt: { gte: cutoff } }, { postedAt: null }] },
+        titleFilter,
+      ],
     },
     orderBy: { postedAt: "desc" },
-    take: 200,
   });
 
   const matches = await prisma.jobMatch.findMany({
@@ -182,7 +195,30 @@ export async function GET(request: Request) {
     });
   }
 
-  const filtered = result.filter((r) => (r.match?.score ?? 0) >= matchMinScore);
+  // #region agent log
+  const urlBlocked = result.filter((r) => !isDirectCompanyJobUrl(r.job.url));
+  fetch("http://127.0.0.1:7754/ingest/f9ecae41-8d2e-4030-8549-ba19d6e46d59", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "c47cc6" },
+    body: JSON.stringify({
+      sessionId: "c47cc6",
+      location: "src/app/api/jobs/matched/route.ts:url-filter",
+      message: "URL filter results",
+      data: {
+        totalJobs: result.length,
+        blockedCount: urlBlocked.length,
+        blockedSamples: urlBlocked.slice(0, 5).map((r) => ({ title: r.job.title, url: r.job.url })),
+      },
+      timestamp: Date.now(),
+      hypothesisId: "D",
+    }),
+  }).catch(() => {});
+  // #endregion
+
+  // Exclude rejected jobs and jobs whose stored URL is a known aggregator (stale DB records).
+  const filtered = result.filter(
+    (r) => r.match?.status !== "rejected" && isDirectCompanyJobUrl(r.job.url)
+  );
   filtered.sort((a, b) => (b.match?.score ?? 0) - (a.match?.score ?? 0));
 
   const scores = result.map((r) => r.match?.score ?? 0).filter((s) => s > 0);

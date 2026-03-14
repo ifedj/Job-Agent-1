@@ -2,6 +2,25 @@
 
 import { useState, useEffect } from "react";
 
+const COMPANY_SYSTEMS_KEY = "job-search-company-systems";
+
+function getCachedCompanySystems(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem(COMPANY_SYSTEMS_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, string>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function setCachedCompanySystems(map: Record<string, string>) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(COMPANY_SYSTEMS_KEY, JSON.stringify(map));
+  } catch {}
+}
+
 type JobItem = {
   job: {
     id: string;
@@ -25,11 +44,14 @@ type JobItem = {
   isTopMatch?: boolean;
 };
 
+const JOBS_PER_PAGE = 20;
+
 export function JobsList() {
   const [items, setItems] = useState<JobItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
   async function loadJobs() {
     setLoading(true);
@@ -43,6 +65,7 @@ export function JobsList() {
         return;
       }
       setItems(data.jobs ?? []);
+      setPage(1);
     } catch {
       setError("Failed to load jobs");
       setItems([]);
@@ -58,16 +81,22 @@ export function JobsList() {
     setSearching(true);
     setError("");
     try {
+      const companySystems = getCachedCompanySystems();
       const res = await fetch("/api/jobs/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify(
+          Object.keys(companySystems).length > 0 ? { companySystems } : {}
+        ),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? "Search failed");
         setSearching(false);
         return;
+      }
+      if (data.companySystems && typeof data.companySystems === "object") {
+        setCachedCompanySystems(data.companySystems as Record<string, string>);
       }
       await loadJobs();
     } catch {
@@ -93,6 +122,11 @@ export function JobsList() {
     return <div className="mt-6 text-slate-500">Loading jobs…</div>;
   }
 
+  const totalPages = Math.max(1, Math.ceil(items.length / JOBS_PER_PAGE));
+  const currentPage = Math.min(page, totalPages);
+  const start = (currentPage - 1) * JOBS_PER_PAGE;
+  const pageItems = items.slice(start, start + JOBS_PER_PAGE);
+
   return (
     <div className="mt-6 space-y-4">
       <div className="flex flex-wrap items-center gap-4">
@@ -104,6 +138,9 @@ export function JobsList() {
         >
           {searching ? "Searching…" : "Run job search"}
         </button>
+        <span className="text-sm font-medium text-slate-700">
+          {items.length} job{items.length !== 1 ? "s" : ""} found
+        </span>
         <span className="text-sm text-slate-500">
           Only roles from the last 30 days. Click the link to verify the role is still open, then approve or reject.
         </span>
@@ -120,7 +157,7 @@ export function JobsList() {
       )}
 
       <ul className="space-y-3">
-        {items.map(({ job, match, isTopMatch }) => (
+        {pageItems.map(({ job, match, isTopMatch }) => (
           <li
             key={job.id}
             className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
@@ -210,12 +247,36 @@ export function JobsList() {
                       Reject
                     </button>
                   </>
-                )}
-              </div>
             )}
-          </li>
+          </div>
+        )}
+      </li>
         ))}
       </ul>
+
+      {items.length > JOBS_PER_PAGE && (
+        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-slate-200">
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage <= 1}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-slate-600">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage >= totalPages}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }
