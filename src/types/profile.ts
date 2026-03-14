@@ -32,4 +32,7 @@ export interface ProfilePreferences {
   maxJobAgeDays?: number; // default 30
   matchMinScore?: number; // minimum score to show a role (default 75)
   matchMinScoreTop?: number; // score threshold for "top match" e.g. 90 (default 90)
+  jobType?: string; // e.g. Full-time, Part-time
+  workMode?: string; // e.g. Remote, Hybrid, On-site
+  keySkills?: string[]; // selected skill tags
 }

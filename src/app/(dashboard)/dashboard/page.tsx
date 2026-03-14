@@ -60,6 +60,13 @@ export default async function DashboardPage() {
 
   const preferences = profile ? (JSON.parse(profile.preferences) as Record<string, unknown>) : {};
   const name = (session.user as { name?: string | null }).name ?? session.user.email ?? "there";
+  const hasCv = !!profile?.originalCvPath || (profile?.structuredCv && profile.structuredCv !== "{}");
+  const prefs = profile?.preferences ? (JSON.parse(profile.preferences) as Record<string, unknown>) : {};
+  const hasPreferences =
+    (Array.isArray(prefs.locations) && prefs.locations.length > 0) ||
+    (Array.isArray(prefs.industries) && prefs.industries.length > 0) ||
+    (Array.isArray(prefs.companyTypes) && prefs.companyTypes.length > 0) ||
+    prefs.targetRole != null;
 
   return (
     <DashboardStats
@@ -74,6 +81,9 @@ export default async function DashboardPage() {
         applicationsCount,
         outreachSentCount,
       }}
+      profileComplete={!!profile && isOnboardingComplete(profile)}
+      hasCv={!!hasCv}
+      hasPreferences={!!hasPreferences}
     />
   );
 }

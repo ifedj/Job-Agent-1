@@ -4,6 +4,10 @@ import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 function LoginForm() {
   const router = useRouter();
@@ -38,66 +42,59 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#ffffff] px-4">
-      <div className="w-full max-w-sm rounded-xl border border-[#e5e7eb] bg-white p-8 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
-        <h1 className="text-xl font-semibold text-[#0a0a0a]">Sign in</h1>
-        <p className="mt-1 text-sm text-[#6b7280]">
-          Personalised Job Search & Application
-        </p>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          {error && (
-            <p className="rounded bg-[#fffbeb] px-3 py-2 text-sm text-[#92400e]">
-              {error}
-            </p>
-          )}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-[#374151]">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="mt-1 block w-full rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-[#111111] placeholder-[#6b7280] focus:border-[#0a0a0a] focus:outline-none focus:ring-1 focus:ring-[#0a0a0a]"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-[#374151]">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="mt-1 block w-full rounded-lg border border-[#e5e7eb] bg-white px-3 py-2 text-[#111111] placeholder-[#6b7280] focus:border-[#0a0a0a] focus:outline-none focus:ring-1 focus:ring-[#0a0a0a]"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-[#000000] px-4 py-2.5 font-medium text-white hover:opacity-90 disabled:opacity-50"
-          >
-            {loading ? "Signing in…" : "Sign in"}
-          </button>
-        </form>
-        <p className="mt-4 text-center text-sm text-[#6b7280]">
-          No account?{" "}
-          <Link href="/register" className="font-medium text-[#0a0a0a] hover:underline">
-            Sign up
-          </Link>
-        </p>
-      </div>
+    <div className="flex min-h-screen items-center justify-center bg-[var(--background)] px-4">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Sign in</CardTitle>
+          <CardDescription>Personalised Job Search & Application</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <p className="rounded bg-[#fffbeb] px-3 py-2 text-sm text-[#92400e]">
+                {error}
+              </p>
+            )}
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="you@example.com"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Signing in…" : "Sign in"}
+            </Button>
+          </form>
+          <p className="mt-4 text-center text-sm text-[var(--muted-foreground)]">
+            No account?{" "}
+            <Link href="/register" className="font-medium text-[var(--foreground)] hover:underline">
+              Sign up
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#ffffff] text-[#374151]">Loading…</div>}>
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[var(--background)] text-[var(--foreground)]">Loading…</div>}>
       <LoginForm />
     </Suspense>
   );

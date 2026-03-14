@@ -1,23 +1,15 @@
 import Link from "next/link";
-
-function greeting(): string {
-  const h = new Date().getHours();
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
-}
-
-function targetingSummary(preferences: Record<string, unknown>): string {
-  const role = preferences.targetRole as string | undefined;
-  const industries = preferences.industries as string[] | undefined;
-  const locations = preferences.locations as string[] | undefined;
-  const parts: string[] = [];
-  if (role) parts.push(role);
-  if (industries?.length) parts.push(industries.slice(0, 2).join(", ") + (industries.length > 2 ? ` +${industries.length - 2}` : ""));
-  if (locations?.length) parts.push(locations.slice(0, 2).join(", ") + (locations.length > 2 ? ` +${locations.length - 2}` : ""));
-  if (parts.length === 0) return "Set your preferences in Settings.";
-  return "Targeting " + parts.join(" in ");
-}
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Sparkles,
+  Briefcase,
+  Mail,
+  TrendingUp,
+  Target,
+  Lightbulb,
+} from "lucide-react";
+import { TopMatchesList } from "./TopMatchesList";
 
 type DashboardStatsProps = {
   userId: string;
@@ -31,90 +23,205 @@ type DashboardStatsProps = {
     applicationsCount: number;
     outreachSentCount: number;
   };
+  profileComplete: boolean;
+  hasCv: boolean;
+  hasPreferences: boolean;
 };
 
-export function DashboardStats({ userName, preferences, stats }: DashboardStatsProps) {
-  const dateStr = new Date().toLocaleDateString("en-GB", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-  });
-
+export function DashboardStats({
+  userName,
+  stats,
+  profileComplete,
+  hasCv,
+  hasPreferences,
+}: DashboardStatsProps) {
   return (
-    <div>
-      <p className="text-sm text-[#6b7280]">{dateStr}</p>
-      <h1 className="mt-1 text-2xl font-semibold text-[#0a0a0a]">
-        {greeting()}, {userName} 👋
-      </h1>
-      <p className="mt-2 text-[#374151]">{targetingSummary(preferences)}</p>
-
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatCard
-          label="Jobs found"
-          value={stats.jobsCount}
-          href="/jobs"
-          icon="📋"
-        />
-        <StatCard
-          label="Pending review"
-          value={stats.pendingCount}
-          href="/jobs"
-          icon="⏳"
-        />
-        <StatCard
-          label="Approved"
-          value={stats.approvedCount}
-          href="/jobs"
-          icon="✓"
-        />
-        <StatCard
-          label="Applications"
-          value={stats.applicationsCount}
-          href="/applications"
-          icon="📄"
-        />
-        <StatCard
-          label="Outreach sent"
-          value={stats.outreachSentCount}
-          href="/applications"
-          icon="✉️"
-        />
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-semibold text-[var(--foreground)] sm:text-3xl">
+          Welcome back, {userName}!
+        </h1>
+        <p className="mt-1 text-[var(--muted-foreground)]">
+          Here are your personalized job matches for today.
+        </p>
       </div>
 
-      {stats.jobsCount === 0 && (
-        <div className="mt-8 rounded-xl border border-[#e5e7eb] bg-white p-6 text-center shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
-          <p className="text-[#374151]">No jobs yet. Run a search to find roles that match your profile.</p>
-          <Link
-            href="/jobs"
-            className="mt-4 inline-block rounded-lg bg-[#000000] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
-          >
-            Go to Jobs
-          </Link>
-        </div>
-      )}
-    </div>
-  );
-}
+      {/* Metric cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="border-[var(--border)] bg-[var(--card)]">
+          <CardContent className="p-5">
+            <Sparkles className="h-5 w-5 text-[var(--brand)]" />
+            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+              {stats.jobsCount}
+            </p>
+            <p className="text-sm font-medium text-[var(--muted-foreground)]">
+              New Matches
+            </p>
+            <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
+              +{stats.pendingCount} pending
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="border-[var(--border)] bg-[var(--card)]">
+          <CardContent className="p-5">
+            <Briefcase className="h-5 w-5 text-blue-600" />
+            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+              {stats.applicationsCount}
+            </p>
+            <p className="text-sm font-medium text-[var(--muted-foreground)]">
+              Active Applications
+            </p>
+            <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
+              {stats.approvedCount} approved
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="border-[var(--border)] bg-[var(--card)]">
+          <CardContent className="p-5">
+            <Mail className="h-5 w-5 text-[var(--brand)]" />
+            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+              {stats.outreachSentCount}
+            </p>
+            <p className="text-sm font-medium text-[var(--muted-foreground)]">
+              Messages Sent
+            </p>
+            <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
+              From applications
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="border-[var(--border)] bg-[var(--card)]">
+          <CardContent className="p-5">
+            <TrendingUp className="h-5 w-5 text-pink-500" />
+            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+              —
+            </p>
+            <p className="text-sm font-medium text-[var(--muted-foreground)]">
+              Profile Views
+            </p>
+            <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
+              Coming soon
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
-function StatCard({
-  label,
-  value,
-  href,
-  icon,
-}: {
-  label: string;
-  value: number;
-  href: string;
-  icon: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="rounded-xl border border-[#e5e7eb] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-md"
-    >
-      <span className="text-2xl" aria-hidden>{icon}</span>
-      <p className="mt-2 text-2xl font-semibold text-[#0a0a0a]">{value}</p>
-      <p className="text-sm font-medium text-[#6b7280]">{label}</p>
-    </Link>
+      {/* Two columns: Top Matches + Sidebar */}
+      <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+        <div>
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
+              Top Matches
+            </h2>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/jobs">Filter</Link>
+            </Button>
+          </div>
+          <div className="mt-4">
+            <TopMatchesList />
+          </div>
+          {stats.jobsCount === 0 && (
+            <Card className="mt-6 p-6 text-center">
+              <CardContent className="p-0">
+                <p className="text-[var(--muted-foreground)]">
+                  No jobs yet. Run a search to find roles that match your
+                  profile.
+                </p>
+                <Button asChild className="mt-4" variant="brand">
+                  <Link href="/jobs">Go to Jobs</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        <aside className="space-y-6">
+          <Card className="border-[var(--border)] bg-[var(--card)]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Profile Strength</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 pt-0">
+              <div>
+                <p className="text-sm text-[var(--muted-foreground)]">
+                  Completion {profileComplete ? "100" : hasCv && hasPreferences ? "85" : hasCv ? "50" : "25"}%
+                </p>
+                <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[var(--muted)]">
+                  <div
+                    className="h-full rounded-full bg-[var(--foreground)]"
+                    style={{
+                      width: profileComplete ? "100%" : hasCv && hasPreferences ? "85%" : hasCv ? "50%" : "25%",
+                    }}
+                  />
+                </div>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <span
+                    className={`h-2 w-2 rounded-full ${hasCv ? "bg-green-500" : "bg-[var(--muted-foreground)]"}`}
+                  />
+                  CV uploaded
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    className={`h-2 w-2 rounded-full ${hasPreferences ? "bg-green-500" : "bg-[var(--muted-foreground)]"}`}
+                  />
+                  Preferences set
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-amber-500" />
+                  Add portfolio
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[var(--border)] bg-[var(--card)]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2 pt-0">
+              <Button variant="outline" size="sm" className="justify-start" asChild>
+                <Link href="/applications" className="gap-2">
+                  <Briefcase className="h-4 w-4" />
+                  View Applications
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" className="justify-start" asChild>
+                <Link href="/applications" className="gap-2">
+                  <Mail className="h-4 w-4" />
+                  Draft Outreach
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" className="justify-start" asChild>
+                <Link href="/settings" className="gap-2">
+                  <Target className="h-4 w-4" />
+                  Update Preferences
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="overflow-hidden border-0 bg-gradient-to-br from-[var(--brand)] to-indigo-700 text-[var(--brand-foreground)]">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-2">
+                <Lightbulb className="h-5 w-5" />
+                <h3 className="font-semibold">Pro Tip</h3>
+              </div>
+              <p className="mt-2 text-sm opacity-95">
+                Jobs posted in the last 24 hours get 3x more applications. Apply
+                early to stand out!
+              </p>
+              <Button
+                size="sm"
+                className="mt-4 bg-white text-[var(--brand)] hover:bg-white/90"
+                asChild
+              >
+                <Link href="/jobs">Learn More</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </aside>
+      </div>
+    </div>
   );
 }

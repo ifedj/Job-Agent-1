@@ -23,16 +23,11 @@ export default async function OnboardingPage() {
     : DEFAULT_PREFS;
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-[#0a0a0a]">Welcome</h1>
-      <p className="mt-1 text-[#374151]">
-        Set up your profile so we can find the right roles for you.
-      </p>
-      <OnboardingClient
-        initialHasCv={hasCv}
-        initialSummary={structuredCv?.summary}
-        initialPreferences={preferences}
-      />
-    </div>
+    <OnboardingClient
+      initialHasCv={hasCv}
+      initialSummary={structuredCv?.summary}
+      initialPreferences={preferences}
+      initialStep={hasCv ? 2 : 1}
+    />
   );
 }

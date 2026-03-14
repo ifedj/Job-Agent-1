@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { AppSidebar } from "./AppSidebar";
+import { Layout } from "../components/Layout";
 
 export default async function DashboardLayout({
   children,
@@ -12,10 +12,5 @@ export default async function DashboardLayout({
     redirect("/login?callbackUrl=/dashboard");
   }
 
-  return (
-    <div className="flex min-h-screen bg-[#ffffff]">
-      <AppSidebar user={session.user} />
-      <main className="flex-1 overflow-auto px-6 py-8">{children}</main>
-    </div>
-  );
+  return <Layout user={session.user}>{children}</Layout>;
 }
