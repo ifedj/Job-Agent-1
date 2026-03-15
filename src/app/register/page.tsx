@@ -102,21 +102,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] px-4 py-12">
+    <div className="min-h-screen bg-[var(--background)] px-4 py-8 sm:py-12">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl">
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl">
             Find your next role
           </h1>
-          <p className="mt-3 text-base text-[var(--muted-foreground)] sm:text-lg">
+          <p className="mt-3 text-sm text-[var(--muted-foreground)] sm:text-lg">
             Upload your CV and describe what you&apos;re looking for —{" "}
             <br className="hidden sm:block" />
             we&apos;ll handle the rest
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-10 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5 sm:mt-10 sm:space-y-6">
           {error && (
             <div
               role="alert"
@@ -126,7 +126,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Two cards: CV + Job description */}
+          {/* Two cards: CV + Job description — stack on mobile */}
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Left: CV drop zone */}
             <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-sm">
@@ -139,7 +139,7 @@ export default function RegisterPage() {
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
                 className={cn(
-                  "mt-3 flex flex-1 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-4 py-10 transition-colors",
+                  "mt-3 flex min-h-[160px] flex-1 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-4 py-8 transition-colors",
                   dragOver
                     ? "border-[var(--brand)] bg-[var(--brand-muted)]/40"
                     : "border-[var(--border)] bg-[var(--muted)]/30 hover:border-[var(--brand)]/50 hover:bg-[var(--brand-muted)]/20"
@@ -282,7 +282,7 @@ export default function RegisterPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="h-11 w-full rounded-lg bg-[var(--brand)] font-semibold text-[var(--brand-foreground)] hover:opacity-90 disabled:opacity-50"
+            className="h-12 w-full rounded-lg bg-[var(--brand)] text-base font-semibold text-[var(--brand-foreground)] hover:opacity-90 disabled:opacity-50"
           >
             {loading ? "Finding your jobs…" : "Find My Jobs →"}
           </Button>

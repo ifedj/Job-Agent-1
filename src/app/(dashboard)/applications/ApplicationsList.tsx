@@ -63,9 +63,9 @@ export function ApplicationsList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
         <select
-          className="rounded-[var(--radius)] border border-[var(--border)] bg-[var(--input-background)] px-3 py-2 text-sm text-[var(--foreground)]"
+          className="h-10 flex-1 rounded-[var(--radius)] border border-[var(--border)] bg-[var(--input-background)] px-3 py-2 text-sm text-[var(--foreground)] sm:flex-none"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
@@ -74,17 +74,13 @@ export function ApplicationsList() {
           <option>Interview</option>
         </select>
         <select
-          className="rounded-[var(--radius)] border border-[var(--border)] bg-[var(--input-background)] px-3 py-2 text-sm text-[var(--foreground)]"
+          className="h-10 flex-1 rounded-[var(--radius)] border border-[var(--border)] bg-[var(--input-background)] px-3 py-2 text-sm text-[var(--foreground)] sm:flex-none"
           value={sort}
           onChange={(e) => setSort(e.target.value)}
         >
           <option>Most Recent</option>
           <option>Oldest</option>
         </select>
-        <Button variant="outline" size="sm" className="gap-2">
-          <span className="inline-block h-4 w-4 rounded bg-[var(--muted)]" />
-          More Filters
-        </Button>
       </div>
 
       <div className="flex gap-1 border-b border-[var(--border)]">
@@ -179,7 +175,7 @@ function ApplicationCard({ item }: { item: AppItem }) {
               {status}
             </span>
           </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2 sm:flex-row">
             {item.application ? (
               <Button variant="outline" size="sm" asChild>
                 <Link

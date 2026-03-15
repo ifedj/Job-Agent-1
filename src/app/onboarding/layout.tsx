@@ -12,7 +12,7 @@ export default async function OnboardingLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[var(--background)] via-[var(--background)] to-[var(--brand-muted)]/30">
+    <div className="min-h-screen bg-gradient-to-b from-[var(--background)] via-[var(--background)] to-[var(--brand-muted)]/30 pb-8">
       {children}
     </div>
   );

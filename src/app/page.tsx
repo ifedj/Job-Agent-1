@@ -34,64 +34,64 @@ export default async function HomePage() {
       </header>
 
       {/* Hero section */}
-      <main className="mx-auto max-w-6xl px-4 pt-24 pb-16 sm:px-6 sm:pt-28 lg:px-8 lg:pt-32">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-12 lg:items-center">
+      <main className="mx-auto max-w-6xl px-4 pt-20 pb-12 sm:px-6 sm:pt-28 lg:px-8 lg:pt-32">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 lg:items-center">
           {/* Left: copy + CTAs + stats */}
           <div>
             <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-muted)] px-3.5 py-1.5 text-sm font-medium text-[var(--brand)]">
               <Sparkles className="h-3.5 w-3.5" />
               AI-Powered Job Search
             </div>
-            <h1 className="mt-6 text-4xl font-semibold tracking-tight text-[var(--foreground)] sm:text-5xl lg:text-5xl">
+            <h1 className="mt-5 text-3xl font-semibold tracking-tight text-[var(--foreground)] sm:text-5xl lg:text-5xl">
               Your Personal AI Job Agent
             </h1>
-            <p className="mt-4 max-w-lg text-lg text-[var(--muted-foreground)]">
+            <p className="mt-4 text-base text-[var(--muted-foreground)] sm:text-lg">
               Find your dream job faster with AI that personalizes your CV, crafts
               compelling cover letters, and drafts perfect outreach emails for
               every opportunity.
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button variant="brand" size="lg" asChild>
-                <Link href="/register" className="inline-flex items-center gap-2">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+              <Button variant="brand" size="lg" className="w-full sm:w-auto" asChild>
+                <Link href="/register" className="inline-flex items-center justify-center gap-2">
                   Start Finding Jobs
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/login">Watch Demo</Link>
+              <Button variant="outline" size="lg" className="w-full sm:w-auto" asChild>
+                <Link href="/login">Sign In</Link>
               </Button>
             </div>
             {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-8 border-t border-[var(--border)] pt-10">
+            <div className="mt-10 grid grid-cols-3 gap-4 border-t border-[var(--border)] pt-8">
               <div>
-                <p className="text-2xl font-semibold text-[var(--foreground)] sm:text-3xl">
+                <p className="text-xl font-semibold text-[var(--foreground)] sm:text-3xl">
                   50K+
                 </p>
-                <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)] sm:text-sm">
                   Jobs Matched
                 </p>
               </div>
               <div>
-                <p className="text-2xl font-semibold text-[var(--foreground)] sm:text-3xl">
+                <p className="text-xl font-semibold text-[var(--foreground)] sm:text-3xl">
                   10K+
                 </p>
-                <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)] sm:text-sm">
                   Happy Users
                 </p>
               </div>
               <div>
-                <p className="text-2xl font-semibold text-[var(--foreground)] sm:text-3xl">
+                <p className="text-xl font-semibold text-[var(--foreground)] sm:text-3xl">
                   95%
                 </p>
-                <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                <p className="mt-0.5 text-xs text-[var(--muted-foreground)] sm:text-sm">
                   Success Rate
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Right: hero image */}
-          <div className="relative lg:pl-4">
+          {/* Right: hero image — hidden on mobile to keep page light */}
+          <div className="relative hidden lg:block lg:pl-4">
             <div className="relative overflow-hidden rounded-2xl bg-[var(--muted)] shadow-xl ring-1 ring-[var(--border)]">
               <Image
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
@@ -106,15 +106,15 @@ export default async function HomePage() {
         </div>
 
         {/* Everything You Need */}
-        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--foreground)]">
+        <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+          <h2 className="text-center text-2xl font-semibold tracking-tight text-[var(--foreground)] sm:text-3xl">
             Everything You Need to Land Your Dream Job
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-[var(--muted-foreground)]">
+          <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-[var(--muted-foreground)] sm:text-base">
             Our AI-powered platform handles the heavy lifting so you can focus
             on what matters—getting hired.
           </p>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {[
               {
                 title: "Smart Job Matching",
@@ -174,14 +174,14 @@ export default async function HomePage() {
         </section>
 
         {/* How It Works */}
-        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-semibold tracking-tight text-[var(--foreground)]">
+        <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+          <h2 className="text-center text-2xl font-semibold tracking-tight text-[var(--foreground)] sm:text-3xl">
             How It Works
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-center text-[var(--muted-foreground)]">
+          <p className="mx-auto mt-3 max-w-xl text-center text-sm text-[var(--muted-foreground)] sm:text-base">
             Get started in minutes and let AI do the work
           </p>
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:mt-12 sm:grid-cols-3">
             {[
               {
                 step: "01",
@@ -215,21 +215,21 @@ export default async function HomePage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-gradient-to-r from-[var(--brand)] to-indigo-700 px-4 py-16 sm:px-6 lg:px-8">
+        <section className="rounded-2xl bg-gradient-to-r from-[var(--brand)] to-indigo-700 px-6 py-12 sm:px-8 sm:py-16">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-semibold tracking-tight text-white">
+            <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
               Ready to Find Your Next Role?
             </h2>
-            <p className="mt-3 text-white/90">
+            <p className="mt-3 text-sm text-white/90 sm:text-base">
               Join thousands of professionals who&apos;ve landed their dream
               jobs with JobAgent
             </p>
             <Button
               size="lg"
-              className="mt-6 bg-white text-[var(--brand)] hover:bg-white/90"
+              className="mt-6 w-full bg-white text-[var(--brand)] hover:bg-white/90 sm:w-auto"
               asChild
             >
-              <Link href="/register" className="inline-flex items-center gap-2">
+              <Link href="/register" className="inline-flex items-center justify-center gap-2">
                 Get Started Free
                 <ArrowRight className="h-4 w-4" />
               </Link>

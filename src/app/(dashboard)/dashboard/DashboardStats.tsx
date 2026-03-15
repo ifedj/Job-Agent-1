@@ -38,23 +38,23 @@ export function DashboardStats({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-[var(--foreground)] sm:text-3xl">
+        <h1 className="text-xl font-semibold text-[var(--foreground)] sm:text-3xl">
           Welcome back, {userName}!
         </h1>
-        <p className="mt-1 text-[var(--muted-foreground)]">
+        <p className="mt-1 text-sm text-[var(--muted-foreground)] sm:text-base">
           Here are your personalized job matches for today.
         </p>
       </div>
 
-      {/* Metric cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Metric cards — 2-col on mobile, 4-col on desktop */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <Card className="border-[var(--border)] bg-[var(--card)]">
-          <CardContent className="p-5">
-            <Sparkles className="h-5 w-5 text-[var(--brand)]" />
-            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+          <CardContent className="p-4 sm:p-5">
+            <Sparkles className="h-4 w-4 text-[var(--brand)] sm:h-5 sm:w-5" />
+            <p className="mt-2 text-xl font-semibold text-[var(--foreground)] sm:text-2xl">
               {stats.jobsCount}
             </p>
-            <p className="text-sm font-medium text-[var(--muted-foreground)]">
+            <p className="text-xs font-medium text-[var(--muted-foreground)] sm:text-sm">
               New Matches
             </p>
             <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
@@ -63,13 +63,13 @@ export function DashboardStats({
           </CardContent>
         </Card>
         <Card className="border-[var(--border)] bg-[var(--card)]">
-          <CardContent className="p-5">
-            <Briefcase className="h-5 w-5 text-blue-600" />
-            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+          <CardContent className="p-4 sm:p-5">
+            <Briefcase className="h-4 w-4 text-blue-600 sm:h-5 sm:w-5" />
+            <p className="mt-2 text-xl font-semibold text-[var(--foreground)] sm:text-2xl">
               {stats.applicationsCount}
             </p>
-            <p className="text-sm font-medium text-[var(--muted-foreground)]">
-              Active Applications
+            <p className="text-xs font-medium text-[var(--muted-foreground)] sm:text-sm">
+              Applications
             </p>
             <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
               {stats.approvedCount} approved
@@ -77,12 +77,12 @@ export function DashboardStats({
           </CardContent>
         </Card>
         <Card className="border-[var(--border)] bg-[var(--card)]">
-          <CardContent className="p-5">
-            <Mail className="h-5 w-5 text-[var(--brand)]" />
-            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+          <CardContent className="p-4 sm:p-5">
+            <Mail className="h-4 w-4 text-[var(--brand)] sm:h-5 sm:w-5" />
+            <p className="mt-2 text-xl font-semibold text-[var(--foreground)] sm:text-2xl">
               {stats.outreachSentCount}
             </p>
-            <p className="text-sm font-medium text-[var(--muted-foreground)]">
+            <p className="text-xs font-medium text-[var(--muted-foreground)] sm:text-sm">
               Messages Sent
             </p>
             <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
@@ -91,12 +91,12 @@ export function DashboardStats({
           </CardContent>
         </Card>
         <Card className="border-[var(--border)] bg-[var(--card)]">
-          <CardContent className="p-5">
-            <TrendingUp className="h-5 w-5 text-pink-500" />
-            <p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">
+          <CardContent className="p-4 sm:p-5">
+            <TrendingUp className="h-4 w-4 text-pink-500 sm:h-5 sm:w-5" />
+            <p className="mt-2 text-xl font-semibold text-[var(--foreground)] sm:text-2xl">
               —
             </p>
-            <p className="text-sm font-medium text-[var(--muted-foreground)]">
+            <p className="text-xs font-medium text-[var(--muted-foreground)] sm:text-sm">
               Profile Views
             </p>
             <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
@@ -106,8 +106,8 @@ export function DashboardStats({
         </Card>
       </div>
 
-      {/* Two columns: Top Matches + Sidebar */}
-      <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+      {/* Two columns: Top Matches + Sidebar — stacked on mobile */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div>
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-lg font-semibold text-[var(--foreground)]">

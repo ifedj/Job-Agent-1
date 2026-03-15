@@ -71,7 +71,7 @@ export function OnboardingClient({
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-2xl px-3 py-6 sm:px-6 sm:py-8">
       <div className="mb-6 flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2 text-[var(--foreground)]">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--brand)] text-white">
